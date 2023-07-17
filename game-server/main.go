@@ -9,5 +9,16 @@ import (
 func main() {
 	log.Println("Hello")
 
-	ringbuffer.NewRingBuffer(10)
+	ring := ringbuffer.NewRingBuffer(1000)
+
+	str := "hello"
+	tt := make([]byte, 0, 5)
+
+	for _, v := range []byte(str) {
+		tt = append(tt, v)
+	}
+
+	ring.Enqueue(&tt, int32(len(tt)))
+
+	log.Println(string(ring.Buffer))
 }

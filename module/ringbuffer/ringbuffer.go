@@ -13,7 +13,7 @@ func NewRingBuffer(size int32) *RingBuffer {
 	return &RingBuffer{
 		frontPos:    0,
 		rearPos:     0,
-		Buffer:      make([]byte, 0, size),
+		Buffer:      make([]byte, size, size),
 		defaultSize: size,
 	}
 }
@@ -22,6 +22,7 @@ func (c *RingBuffer) Enqueue(data *[]byte, size int32) int32 {
 	var tmpRearPos int32 = c.rearPos
 	var tmpFrontPos int32 = c.frontPos
 	var ret_val int32 = 0
+
 	for size > 0 {
 		if (tmpRearPos + 1%c.defaultSize) == tmpFrontPos {
 			break
@@ -31,6 +32,7 @@ func (c *RingBuffer) Enqueue(data *[]byte, size int32) int32 {
 		c.Buffer[tmpRearPos] = (*data)[ret_val]
 
 		ret_val++
+		tmpRearPos++
 		size--
 	}
 	c.rearPos = tmpRearPos
