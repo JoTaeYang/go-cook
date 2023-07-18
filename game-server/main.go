@@ -21,4 +21,9 @@ func main() {
 	ring.Enqueue(&tt, int32(len(tt)))
 
 	log.Println(string(ring.Buffer))
+
+	out := make([]byte, 0, 5)
+	ring.Dequeue(&out, 5)
+
+	log.Println(string(out))
 }
