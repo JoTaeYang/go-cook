@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net"
+	"sync"
+	"time"
 )
 
 func main() {
@@ -12,4 +14,12 @@ func main() {
 	}
 
 	_ = sock
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	for {
+		defer wg.Done()
+		time.Sleep(1 * time.Second)
+	}
+	wg.Wait()
 }

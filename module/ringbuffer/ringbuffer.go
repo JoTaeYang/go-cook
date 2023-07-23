@@ -124,3 +124,7 @@ func (c *RingBuffer) DirectDequeueSize() int32 {
 		return c.defaultSize - tmpFrontPos
 	}
 }
+
+func (c *RingBuffer) GetRearPos() []byte {
+	return c.Buffer[c.rearPos:]
+}
