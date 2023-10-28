@@ -17,10 +17,10 @@ var engine *gin.Engine
 
 func InitConfig() {
 	dbConfig := dynamodb.Config{
-		Region:    "ap-southeast-1",
-		AccessKey: "AKIAVU5C7TBCVMDCZ3T7",
-		SecretKey: "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",
-		Table:     "battle-league",
+		Region:    "",
+		AccessKey: "",
+		SecretKey: "",
+		Table:     "",
 	}
 
 	dynamodb.InitDynamoDB(dbConfig)
