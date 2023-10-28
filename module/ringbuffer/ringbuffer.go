@@ -28,15 +28,14 @@ func (c *RingBuffer) Enqueue(data *[]byte, size int32) int32 {
 	var ret_val int32 = 0
 
 	for size > 0 {
-		if (tmpRearPos + 1%c.defaultSize) == tmpFrontPos {
+		if ((tmpRearPos + 1) % c.defaultSize) == tmpFrontPos {
 			break
 		}
 
 		//(*c.Buffer)[tmpRearPos] = *data[]
 		c.Buffer[tmpRearPos] = (*data)[ret_val]
-
+		tmpRearPos = (tmpRearPos + 1) % c.defaultSize
 		ret_val++
-		tmpRearPos++
 		size--
 	}
 	c.rearPos = tmpRearPos
@@ -69,10 +68,10 @@ func (c *RingBuffer) Dequeue(data *[]byte, size int32) (int32, error) {
 
 	if circleCheck {
 		var endSpace int32 = c.defaultSize - orgFrontPos
-		(*data) = append((*data), c.Buffer[orgFrontPos:endSpace]...)
+		(*data) = append((*data), c.Buffer[orgFrontPos:c.defaultSize]...)
 		(*data) = append((*data), c.Buffer[:(orgSize-endSpace)]...)
 	} else {
-		(*data) = append((*data), c.Buffer[orgFrontPos:size]...)
+		(*data) = append((*data), c.Buffer[orgFrontPos:orgFrontPos+size]...)
 	}
 
 	c.frontPos = tmpFrontPos
@@ -127,4 +126,12 @@ func (c *RingBuffer) DirectDequeueSize() int32 {
 
 func (c *RingBuffer) GetRearPos() []byte {
 	return c.Buffer[c.rearPos:]
+}
+
+func (c *RingBuffer) GetFrontPos() []byte {
+	return c.Buffer[c.frontPos:]
+}
+
+func (c *RingBuffer) MoveRearPos(move int32) {
+	c.rearPos += move
 }

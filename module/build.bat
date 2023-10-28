@@ -1,0 +1,1 @@
+E:\protoc-24.1-win64\bin\protoc --proto_path=grpc --proto_path=E:\protoc-24.1-win64\include\google\protobuf --go_out=. packet.proto

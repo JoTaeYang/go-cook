@@ -38,10 +38,9 @@ type User struct {
 var ChatUsers [500]*User
 
 func (user *User) Recv() {
-
-	user.socket.SetReadDeadline(time.Now().Add(time.Microsecond))
-	n, err := user.socket.Read(user.RecvBuffer.GetRearPos())
-
+	//user.socket.SetReadDeadline(time.Now().Add(time.Microsecond))
+	readBuffer := make([]byte, 1000)
+	n, err := user.socket.Read(readBuffer)
 	//연결 종료
 	if err == io.EOF {
 		log.Println("user connection out")
@@ -52,7 +51,9 @@ func (user *User) Recv() {
 			log.Println("user timeout")
 		}
 	} else {
-		log.Println(n)
+		log.Println("user data read : ", readBuffer[:n])
+		// out := make([]byte, 0, 1000)
+		// log.Println(user.RecvBuffer.Peek(&out, int32(n)))
 	}
 }
 
@@ -117,6 +118,7 @@ func main() {
 	}()
 
 	wait.Add(1)
+	//recv thread
 	go func() {
 		for {
 			for _, v := range ChatUsers {

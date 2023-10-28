@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "./packet";
+
+package urpg;
+
+message Header {
+    bytes byCode = 1; //1byte. packet code 0x89
+    bytes size = 2;   //2byte. packet size
+    bytes byType = 3; //2byte. packet type        
+}
+
+message SCConnectSuccess {
+    
+}
+
+message CSConnectSuccess {
+    
+}
