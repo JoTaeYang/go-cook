@@ -6,11 +6,7 @@ import (
 	_ "net/http/pprof"
 	"syscall"
 
-<<<<<<< HEAD
-	"github.com/yoshi-jotaeyang/developgo/common/cache"
-=======
 	"github.com/JoTaeYang/go-cook/common/cache"
->>>>>>> d6fbf59 (test)
 
 	"github.com/JoTaeYang/go-cook/websocket-server/api"
 	"github.com/gin-gonic/gin"
