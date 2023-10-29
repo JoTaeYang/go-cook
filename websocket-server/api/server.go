@@ -9,9 +9,9 @@ import (
 	"sync"
 	"syscall"
 
+	"github.com/JoTaeYang/go-cook/common/cache"
+	"github.com/JoTaeYang/go-cook/websocket-server/api/internal"
 	"github.com/gobwas/ws/wsutil"
-	"github.com/yoshi-jotaeyang/developgo/common/cache"
-	"github.com/yoshi-jotaeyang/developgo/websocket-server/api/internal"
 	"golang.org/x/sys/unix"
 )
 

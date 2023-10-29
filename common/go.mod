@@ -1,6 +1,6 @@
 module github.com/JoTaeYang/go-cook/common
 
-go 1.20
+go 1.18
 
 require (
 	github.com/aws/aws-sdk-go v1.46.6

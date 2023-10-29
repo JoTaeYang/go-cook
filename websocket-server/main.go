@@ -6,10 +6,14 @@ import (
 	_ "net/http/pprof"
 	"syscall"
 
+<<<<<<< HEAD
 	"github.com/yoshi-jotaeyang/developgo/common/cache"
+=======
+	"github.com/JoTaeYang/go-cook/common/cache"
+>>>>>>> d6fbf59 (test)
 
+	"github.com/JoTaeYang/go-cook/websocket-server/api"
 	"github.com/gin-gonic/gin"
-	"github.com/yoshi-jotaeyang/developgo/websocket-server/api"
 )
 
 var engine *gin.Engine
@@ -23,6 +27,11 @@ func InitConfig() {
 	// }
 
 	//dynamodb.InitDynamoDB(dbConfig)
+	// 	Region:    "ap-southeast-1",
+	// 	AccessKey: "AKIAVU5C7TBCVMDCZ3T7",
+	// 	SecretKey: "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",
+	// 	Table:     "battle-league",
+	// }
 
 	// cache.InitRedis(&cache.Config{
 	// 	[]string{
