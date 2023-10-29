@@ -7,7 +7,6 @@ import (
 	"syscall"
 
 	"github.com/yoshi-jotaeyang/developgo/common/cache"
-	"github.com/yoshi-jotaeyang/developgo/common/dynamodb"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yoshi-jotaeyang/developgo/websocket-server/api"
@@ -16,22 +15,22 @@ import (
 var engine *gin.Engine
 
 func InitConfig() {
-	dbConfig := dynamodb.Config{
-		Region:    "",
-		AccessKey: "",
-		SecretKey: "",
-		Table:     "",
-	}
+	// dbConfig := dynamodb.Config{
+	// 	Region:    "",
+	// 	AccessKey: "",
+	// 	SecretKey: "",
+	// 	Table:     "",
+	// }
 
-	dynamodb.InitDynamoDB(dbConfig)
+	//dynamodb.InitDynamoDB(dbConfig)
 
-	cache.InitRedis(&cache.Config{
-		[]string{
-			"192.168.2.240:6380",
-			"192.168.2.240:6381",
-			"192.168.2.240:6382",
-		},
-	}, true)
+	// cache.InitRedis(&cache.Config{
+	// 	[]string{
+	// 		"192.168.2.240:6380",
+	// 		"192.168.2.240:6381",
+	// 		"192.168.2.240:6382",
+	// 	},
+	// }, true)
 }
 
 func InitGin() *gin.Engine {
