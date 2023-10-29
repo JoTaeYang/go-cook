@@ -1,7 +1,6 @@
 package api
 
 import (
-	"bytes"
 	"context"
 	"log"
 	"net"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/JoTaeYang/go-cook/common/cache"
 	"github.com/JoTaeYang/go-cook/websocket-server/api/internal"
+	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
 	"golang.org/x/sys/unix"
 )
@@ -71,10 +71,11 @@ func StartEpoll() {
 		}
 		for _, conn := range connections {
 			var data []byte
+			var op ws.OpCode
 			if conn == nil {
 				break
 			}
-			if data, _, err = wsutil.ReadClientData(conn); err != nil {
+			if data, op, err = wsutil.ReadClientData(conn); err != nil {
 				if err := epoller.Remove(conn); err != nil {
 					log.Printf("Failed to remove %v", err)
 				}
@@ -84,11 +85,12 @@ func StartEpoll() {
 				//log.Printf("msg: %s", string(msg))
 			}
 			log.Println(string(data))
-
-			err := cache.Publish(context.Background(), "CHANNEL_01", bytes.NewBuffer(data).String())
-			if err != nil {
-				log.Println(err)
-			}
+			//writer := wsutil.NewWriterSize(conn, ws.StateServerSide, ws.OpText, 128)
+			wsutil.WriteServerMessage(conn, op, data)
+			// err := cache.Publish(context.Background(), "CHANNEL_01", bytes.NewBuffer(data).String())
+			// if err != nil {
+			// 	log.Println(err)
+			// }
 		}
 	}
 }
@@ -96,7 +98,10 @@ func StartEpoll() {
 func (e *Epoll) Add(conn net.Conn) error {
 	// Extract file descriptor associated with the connection
 	fd := websocketFD(conn)
-	err := unix.EpollCtl(e.fd, syscall.EPOLL_CTL_ADD, fd, &unix.EpollEvent{Events: unix.POLLIN | unix.POLLHUP | unix.POLLOUT, Fd: int32(fd)})
+
+	syscall.SetNonblock(fd, true)
+
+	err := unix.EpollCtl(e.fd, syscall.EPOLL_CTL_ADD, fd, &unix.EpollEvent{Events: unix.POLLOUT | unix.POLLHUP, Fd: int32(fd)})
 	if err != nil {
 		return err
 	}
@@ -136,6 +141,7 @@ func (e *Epoll) Wait() ([]net.Conn, error) {
 	defer e.lock.RUnlock()
 	var connections []net.Conn
 	for i := 0; i < n; i++ {
+		log.Println(events[i].Events)
 		conn := e.connections[int(events[i].Fd)]
 		connections = append(connections, *conn.Conn)
 	}
